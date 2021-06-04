@@ -1,0 +1,36 @@
+package dev.carbajal.models;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Customer extends User {
+	
+	public double depositAmount;
+	public double withdrawAmount;
+	String accountType;
+	
+	List<Customer> customers = new ArrayList<Customer>();
+	
+	public void createAccount() {
+		
+		// implement a check for invalid starting bal and account type
+		// then add to custAccounts list
+	}
+	
+	public void viewAccountBal() {
+		
+	}
+	
+	public void withdrawal(double withdrawAmount) {
+		
+	}
+	
+	public void deposit(double depositAmount) {
+		
+	}
+	
+	public void transferFunds() {
+		
+	}
+
+}

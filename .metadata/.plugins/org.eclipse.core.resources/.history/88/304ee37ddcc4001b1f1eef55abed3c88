@@ -1,0 +1,12 @@
+package dev.carbajal.models;
+
+public class CheckingAccount extends Account{
+
+	// Constructor
+
+	public CheckingAccount (int accountNum, String accountAppStatus, String accountType, double accountBal) {
+
+		super(accountNum, accountAppStatus, accountType, accountBal);
+	}
+
+}

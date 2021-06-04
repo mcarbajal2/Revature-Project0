@@ -1,0 +1,13 @@
+package dev.carbajal.models;
+
+public class Employee extends Customer {
+
+	public void approveAccount() {
+
+	}
+
+	public void viewAccounts() {
+
+	}
+
+}

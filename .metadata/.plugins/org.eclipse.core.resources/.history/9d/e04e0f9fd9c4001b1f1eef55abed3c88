@@ -1,0 +1,14 @@
+package dev.carbajal.models;
+
+public class SavingsAccount extends Account{
+	
+	private String = "Savings";
+	
+	// Constructor
+
+	public SavingsAccount (int accountNum, String accountType, double accountBal) {
+
+		super(accountNum, accountType, accountBal);
+	}
+
+}

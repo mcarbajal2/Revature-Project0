@@ -1,0 +1,29 @@
+package dev.carbajal.models;
+
+public class Customer extends User {
+	
+	public int deposit;
+	public int withdraw;
+	String accountType;
+	
+	public void createAccount() {
+		
+	}
+	
+	public void viewAccountBal() {
+		
+	}
+	
+	public void withdrawal() {
+		
+	}
+	
+	public void deposit() {
+		
+	}
+	
+	public void transferFunds() {
+		
+	}
+
+}

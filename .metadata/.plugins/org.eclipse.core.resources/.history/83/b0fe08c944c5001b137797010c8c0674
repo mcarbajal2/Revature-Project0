@@ -1,0 +1,30 @@
+package dev.carbajal.models;
+
+public class Employee extends Customer {
+
+	public Employee(String username, String password, String firstName, String lastName, String accountType) {
+		
+		super(username, password, firstName, lastName, accountType);
+	}
+
+	public void reviewAccounts() {
+		
+		// display pending accounts info
+		// ask for input: "approve/deny acctNum#")
+		// if no more pending accounts, no more accounts to review, exit
+
+	}
+
+	public void viewCustAccounts() {
+		
+		// view a customer's accounts by retrieving all associated with that user name
+
+	}
+	
+	public void viewTransactions() {
+		
+		// return database transactions table (PK, Account#, USer, Amount, (maybe time stamp stored as string in java))
+		
+	}
+
+}

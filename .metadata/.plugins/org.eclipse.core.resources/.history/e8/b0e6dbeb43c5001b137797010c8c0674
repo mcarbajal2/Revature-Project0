@@ -1,0 +1,22 @@
+package dev.carbajal.models;
+
+public class Employee extends Customer {
+
+	public Employee(String username, String password, String firstName, String lastName, String accountType) {
+		
+		super(username, password, firstName, lastName, accountType);
+	}
+
+	public void approveAccount() {
+
+	}
+
+	public void viewCustAccounts() {
+
+	}
+	
+	public void viewTransactions() {
+		
+	}
+
+}
