@@ -1,14 +1,12 @@
 package dev.carbajal.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class Account {
 
+	private Integer id;
 	private Integer accountNum;
 	private String accountType;
 	private boolean pendingAccount;
-	private double accountBal;
+	private Double accountBal;
 
 	// Constructor
 
@@ -21,7 +19,7 @@ public abstract class Account {
 		this.accountNum = accountNum;
 	}
 
-	public Account(int accountNum, String accountType, boolean pendingAccount, double accountBal) {
+	public Account(int accountNum, String accountType, boolean pendingAccount, Double accountBal) {
 
 		this.accountNum = accountNum;
 		this.accountType = accountType;
@@ -31,12 +29,19 @@ public abstract class Account {
 
 	// Getters and Setters
 
-	public int getAccountNum() {
+	public Integer getId() {		
+		return id;
+	}
 
+	public void setId(Integer id) {		
+		this.id = id;
+	}
+
+	public int getAccountNum() {
 		return accountNum;
 	}
 
-	public void setAccountNum(int accountNum) {
+	public void setAccountNum(int accountNum) {	
 		this.accountNum = accountNum;
 	}
 
@@ -60,7 +65,7 @@ public abstract class Account {
 		return accountBal;
 	}
 
-	public void setAccountBal(double accountBal) {
+	public void setAccountBal(Double accountBal) {
 		this.accountBal = accountBal;
 	}
 

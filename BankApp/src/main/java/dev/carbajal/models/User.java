@@ -2,12 +2,16 @@ package dev.carbajal.models;
 
 public class User {
 
+	private Integer id;
 	private String username;
 	private String password;
 	private String firstName;
 	private String lastName;
 	private boolean employeeAcct;
-	
+
+	public User() {
+		// empty constructor
+	}
 	
 	public User(String username, String password, String firstName, String lastName, boolean employeeAcct) {
 		super();
@@ -17,7 +21,73 @@ public class User {
 		this.lastName = lastName;
 		this.employeeAcct = employeeAcct;
 	}
-	
+
+	// Getters and Setters
+
+	public String getUsername() {
+		return username;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+
+	public String getLastName() {
+		return lastName;
+	}
+
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+
+
+	public boolean isEmployeeAcct() {
+		return employeeAcct;
+	}
+
+
+
+	public void setEmployeeAcct(boolean employeeAcct) {
+		this.employeeAcct = employeeAcct;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -69,5 +139,5 @@ public class User {
 		return "User [username = " + username + ", password = " + password + ", firstName = " + firstName + ", lastName = "
 				+ lastName + ", employeeAcct = " + employeeAcct + "]";
 	}
-	
+
 }
