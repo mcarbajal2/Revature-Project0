@@ -1,24 +1,22 @@
 package dev.carbajal.models;
 
 public class Transaction {
-	
-	private static double depositAmount;
-	private static double withdrawAmount;
-	private static double transferAmount;
-	
-	public void withdrawal(double withdrawAmount) {
-		
-		this.withdrawAmount = withdrawAmount;
+
+	private static double transactionAmount;
+
+	public void withdrawal(double transactionAmount) {
+
+		this.transactionAmount = transactionAmount;
 	}
 
-	public void deposit(double depositAmount) {
-		
-		this.depositAmount = depositAmount;
+	public void deposit(double transactionAmount) {
+
+		this.transactionAmount = transactionAmount;
 	}
 
-	public void transferFunds(double transferAmount) {
-		
-		this.transferAmount = transferAmount;
+	public void transfer(double transactionAmount) {
+
+		this.transactionAmount = transactionAmount;
 	}
 
 }

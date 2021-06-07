@@ -4,52 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Account {
-	
-	int accountNum;
-	String accountAppStatus;
-	String accountType;
-	double accountBal;
-	
-	List<Account> accounts = new ArrayList<Account>();
-	
+
+	private Integer accountNum;
+	private String accountType;
+	private boolean pendingAccount;
+	private double accountBal;
+
 	// Constructor
-	
+
 	public Account() {
-		
-	}
-	
-	public Account(int accountNum) {
-		
-		this.accountNum = accountNum;
-	}
-	
-	public Account(int accountNum, String accountAppStatus, String accountType, double accountBal) {
-		
-		this.accountNum = accountNum;
-		this.accountAppStatus = accountAppStatus;
-		this.accountType = accountType;
-		this.accountBal = accountBal;
-	}
-	
-	// Getters and Setters
-	// user table FK to account table to get correct account info
-	
-	public void getCurrentAccount(int accountNum) {
-		
-		// enhanced for loop to iterate through accounts for index of accountNum? or maybe return acctNum from user table?
-		
-	}
-	
-	public void setCurrentAccount() {
-		
+		// empty constructor
 	}
 
-	public int getAccountNumber() {
-		
+	public Account(int accountNum) {
+
+		this.accountNum = accountNum;
+	}
+
+	public Account(int accountNum, String accountType, boolean pendingAccount, double accountBal) {
+
+		this.accountNum = accountNum;
+		this.accountType = accountType;
+		this.pendingAccount = pendingAccount;
+		this.accountBal = accountBal;
+	}
+
+	// Getters and Setters
+
+	public int getAccountNum() {
+
 		return accountNum;
 	}
 
-	public void setAccountNumber(int accountNum) {
+	public void setAccountNum(int accountNum) {
 		this.accountNum = accountNum;
 	}
 
@@ -59,6 +46,14 @@ public abstract class Account {
 
 	public void setAccountType(String accountType) {
 		this.accountType = accountType;
+	}
+
+	public boolean isPendingAccount() {
+		return pendingAccount;
+	}
+
+	public void setPendingAccount(boolean pendingAccount) {
+		this.pendingAccount = pendingAccount;
 	}
 
 	public double getAccountBal() {
@@ -74,5 +69,50 @@ public abstract class Account {
 		return "Account [accountNum = " + accountNum + ", accountType = " + accountType + ", accountBal = " + accountBal
 				+ "]";
 	}
-	
+
+	public void getCurrentAccount(int accountNum) {
+
+		// needed to keep track of account being looked at?
+		// enhanced for loop to iterate through accounts for index of accountNum? or maybe return acctNum from user table?
+
+	}
+
+	public void setCurrentAccount() {
+
+	}
+
+	///// Customer-specific Methods /////
+
+	public void createAccount() {
+
+		// implement a check for invalid starting balance and account type
+		// then add to custAccounts list
+	}
+
+	public void viewAccountBal() {
+
+	}
+
+	///// Employee-specific Methods ///// - implement a check for employee boolean before allowing a call
+
+	public void reviewAccounts() {
+
+		// display pending accounts info
+		// ask for input: "approve/deny acctNum#")
+		// if no more pending accounts, no more accounts to review, exit
+
+	}
+
+	public void viewCustAccounts() {
+
+		// view a customer's accounts by retrieving all associated with that user name
+
+	}
+
+	public void viewTransactions() {
+
+		// return database transactions table (PK, Account#, USer, Amount, (maybe time stamp stored as string in java))
+
+	}
+
 }
