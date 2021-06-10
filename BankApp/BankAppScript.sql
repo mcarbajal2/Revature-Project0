@@ -15,7 +15,6 @@ is_employee boolean
 create table accounts (
 acc_num serial primary key, 
 u_id int references users(u_id), -- fk to users, 
-acc_num serial,
 balance numeric(10),
 acc_type varchar(10),
 is_pending boolean
@@ -25,7 +24,7 @@ is_pending boolean
 
 create table transactions (
 t_id serial primary key,
-u_id int references accounts(u_id), -- fk to accounts
+u_id int unique references accounts(u_id), -- fk to accounts
 acc_num numeric(6),
 t_amount numeric(10),
 t_name varchar(10)

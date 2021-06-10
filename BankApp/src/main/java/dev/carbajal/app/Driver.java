@@ -422,9 +422,9 @@ public class Driver {
 			break;
 
 		case 6: // log out
-			currentUser = null;
-			userS.logout();
 			logger.info("Customer, " + currentUser.getFirstName() + " " + currentUser.getLastName() + ", has logged out.");
+			userS.logout();
+			currentUser = null;
 			printIntroMenu();
 			break;
 
@@ -559,9 +559,9 @@ public class Driver {
 			break;
 
 		case 6: // log out
-			currentUser = null;
-			userS.logout();
 			logger.info("Employee, " + currentUser.getFirstName() + " " + currentUser.getLastName() + ", has logged out.");
+			userS.logout();
+			currentUser = null;
 			printIntroMenu();
 			break;
 

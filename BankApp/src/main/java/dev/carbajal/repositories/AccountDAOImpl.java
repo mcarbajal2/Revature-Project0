@@ -129,7 +129,7 @@ public class AccountDAOImpl implements AccountDAO {
 	@Override
 	public Account getBal(Account acc) { 
 
-		String sql = "select * from bank_accounts where account_number = ?;";
+		String sql = "select * from accounts where acc_num = ?;";
 
 		try {
 
