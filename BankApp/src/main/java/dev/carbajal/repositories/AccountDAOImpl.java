@@ -159,14 +159,13 @@ public class AccountDAOImpl implements AccountDAO {
 	@Override
 	public boolean updateAcc(Account acc) { 
 		
-		String sql = "update accounts set balance = ? where acc_num = ?;";
+		String sql = "update accounts set is_pending = false where u_id = ?;";
 
 		try {
 
 			PreparedStatement ps = conn.prepareStatement(sql);
 
-			ps.setString(1, Double.toString(acc.getAccountBal()));
-			ps.setString(2, Integer.toString(acc.getAccountNum()));
+			ps.setString(1, Integer.toString(acc.getUserId()));
 
 			boolean success = ps.execute();
 			return success;

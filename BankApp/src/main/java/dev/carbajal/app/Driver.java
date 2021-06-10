@@ -36,7 +36,7 @@ public class Driver {
 	private static Account temp;
 	private static Account temp2;
 	private static String tempInput;
-	
+
 	public static final Logger logger = LogManager.getLogger(Driver.class);
 
 	private static UserDAO userDAO = new UserDAOImpl();
@@ -124,7 +124,7 @@ public class Driver {
 			if (userS.logIn(currentUser, uName, uPass)) {
 
 				if (uName.equals("admin") && uPass.equals("password")) {
-					
+
 					logger.info("Employee, " + currentUser.getFirstName() + " " + currentUser.getLastName() + ", has logged in.");
 					employeeActionsMenu();
 
@@ -156,14 +156,14 @@ public class Driver {
 		String uLName = scanner.next();
 
 		User newUser = new User(uName, uPass, uFName, uLName, false);
-		
+
 		userDAO.addUser(newUser);
-		
+
 		currentUser = newUser;
 
-			System.out.println("\nUser account created!\n");
-			logger.info("New Customer, " + currentUser.getFirstName() + " " + currentUser.getLastName() + ", account created.");
-			logInMenu();
+		System.out.println("\nUser account created!\n");
+		logger.info("New Customer, " + currentUser.getFirstName() + " " + currentUser.getLastName() + ", account created.");
+		logInMenu();
 	}
 
 	public static void customerActionsMenu() {
@@ -264,7 +264,7 @@ public class Driver {
 					+ acctDAO.getAllUserAcct(currentUser) + "\n\n"
 					+ "Which account would you like to deposit to?");
 			tempInput = scanner.next();
-			
+
 			if (tempList.contains(tempInput)) {
 
 				temp = tempList.get(Integer.valueOf(tempInput));
@@ -456,24 +456,34 @@ public class Driver {
 		switch (eMenuChoice) {
 
 		case 1: // review accounts
-			//			tempList = acctDAO.getAllAcct();
-			//
-			//			System.out.println("Accounts currently awaiting review:\n\n"
-			//					+ acctDAO.getAllUserAcct(currentUser) + "\n\n"
-			//					+ "Which account would you like to view?");
-			//			tempInput = scanner.next();
-			//
-			//			if (tempList.contains(tempInput)) {
-			//
-			//				acctDAO.getBal(tempList.get(Integer.valueOf(tempInput)));
-			//
-			//			} else {
-			//
-			//				System.out.println("An account with that number was not found.\n"
-			//						+ "Exiting out of the transaction screen for security reasons, please try again.\n");
-			//				customerActionsMenu();
-			//			}
+			tempList = acctDAO.getAllAcct();
 
+			System.out.println("Accounts currently awaiting review:\n\n"
+					+ acctDAO.getAllUserAcct(currentUser) + "\n\n"
+					+ "Which account would you like to view?");
+			tempInput = scanner.next();
+
+			for (Account a : tempList) {
+
+				if (a.isPendingAccount() == true) {
+
+					acctDAO.updateAcc(a);
+					acctS.updateAcc(a);
+
+					Transaction newUpdateTrans = new Transaction();
+					newUpdateTrans.settType("account approved");
+					newUpdateTrans.setUserId(currentUser.getId());
+					tranS.addTransaction(newUpdateTrans);
+					
+					System.out.println("Account " + a.getAccountNum() + " successfully updated!\n");
+					
+				} else {
+
+					System.out.println("An account with that number was not found.\n"
+							+ "Exiting out of the transction screen for security reasons, please try again.\n");
+					employeeActionsMenu();
+				}
+			}
 			break;
 
 		case 2: // view a user's accounts
@@ -514,7 +524,7 @@ public class Driver {
 		case 4: // view transaction
 			System.out.println("All available account transactions:");
 
-			for(Transaction t : tranDAO.getAllTransactions()) {
+			for (Transaction t : tranDAO.getAllTransactions()) {
 
 				System.out.println(tranDAO.getTransaction(t));
 			}
@@ -537,7 +547,15 @@ public class Driver {
 			break;
 
 		case 5: // view all transactions
+			
+			System.out.println("All User transactions:\n\n");
 
+			for (Transaction t : tranDAO.getAllTransactions()) {
+
+				System.out.println(tranDAO.getTransaction(t));
+			}
+			
+			employeeActionsMenu();
 			break;
 
 		case 6: // log out
