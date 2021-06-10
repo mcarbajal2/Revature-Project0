@@ -1,0 +1,6 @@
+INFO  | 2021-06-09 22:31:07 | [main] app.Driver (Driver.java:128) - Employee, John Smith, has logged in.
+INFO  | 2021-06-09 22:35:54 | [main] app.Driver (Driver.java:128) - Employee, John Smith, has logged in.
+INFO  | 2021-06-09 22:36:14 | [main] app.Driver (Driver.java:165) - New Customer, Mina Carbajal, account created.
+INFO  | 2021-06-09 22:36:20 | [main] app.Driver (Driver.java:132) - Customer, Mina Carbajal, has logged in.
+INFO  | 2021-06-09 22:44:45 | [main] app.Driver (Driver.java:165) - New Customer, Rick Astley, account created.
+INFO  | 2021-06-09 22:44:54 | [main] app.Driver (Driver.java:132) - Customer, Rick Astley, has logged in.

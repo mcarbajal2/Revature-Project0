@@ -40,6 +40,7 @@ public class JDBCConnection {
 				conn = DriverManager.getConnection(url, username, password);
 				
 				return conn;
+				
 			} else {
 				
 				return conn;
@@ -52,5 +53,4 @@ public class JDBCConnection {
 
 		return null;
 	}
-
 }

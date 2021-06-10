@@ -1,40 +1,41 @@
 package dev.carbajal.models;
 
-public abstract class Account {
+public class Account {
 
-	private Integer id;
 	private Integer accountNum;
-	private String accountType;
-	private boolean pendingAccount;
 	private Double accountBal;
-
+	private String accountType;
+	private boolean isPending;
+	private Integer userId;
+	
 	// Constructor
 
 	public Account() {
-		// empty constructor
+		super();
 	}
 
-	public Account(int accountNum) {
-
-		this.accountNum = accountNum;
+	public Account(int userId) {
+		
+		this.setUserId(userId);
 	}
 
-	public Account(int accountNum, String accountType, boolean pendingAccount, Double accountBal) {
+	public Account(int accountNum, String accountType, boolean isPending, Double accountBal, Integer userId) {
 
 		this.accountNum = accountNum;
 		this.accountType = accountType;
-		this.pendingAccount = pendingAccount;
-		this.accountBal = accountBal;
+		this.isPending = true;
+		this.accountBal = 0.00;
+		this.userId = userId;
 	}
 
 	// Getters and Setters
-
-	public Integer getId() {		
-		return id;
+	
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setId(Integer id) {		
-		this.id = id;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public int getAccountNum() {
@@ -54,11 +55,11 @@ public abstract class Account {
 	}
 
 	public boolean isPendingAccount() {
-		return pendingAccount;
+		return isPending;
 	}
 
-	public void setPendingAccount(boolean pendingAccount) {
-		this.pendingAccount = pendingAccount;
+	public void setPendingAccount(boolean isPending) {
+		this.isPending = isPending;
 	}
 
 	public double getAccountBal() {
@@ -71,53 +72,54 @@ public abstract class Account {
 
 	@Override
 	public String toString() {
-		return "Account [accountNum = " + accountNum + ", accountType = " + accountType + ", accountBal = " + accountBal
-				+ "]";
+		return "Account [accountNum = " + accountNum + ", accountBal = " + accountBal + ", accountType = " + accountType
+				+ ", isPending = " + isPending + "]";
 	}
 
-	public void getCurrentAccount(int accountNum) {
-
-		// needed to keep track of account being looked at?
-		// enhanced for loop to iterate through accounts for index of accountNum? or maybe return acctNum from user table?
-
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((accountBal == null) ? 0 : accountBal.hashCode());
+		result = prime * result + ((accountNum == null) ? 0 : accountNum.hashCode());
+		result = prime * result + ((accountType == null) ? 0 : accountType.hashCode());
+		result = prime * result + (isPending ? 1231 : 1237);
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+		return result;
 	}
 
-	public void setCurrentAccount() {
-
-	}
-
-	///// Customer-specific Methods /////
-
-	public void createAccount() {
-
-		// implement a check for invalid starting balance and account type
-		// then add to custAccounts list
-	}
-
-	public void viewAccountBal() {
-
-	}
-
-	///// Employee-specific Methods ///// - implement a check for employee boolean before allowing a call
-
-	public void reviewAccounts() {
-
-		// display pending accounts info
-		// ask for input: "approve/deny acctNum#")
-		// if no more pending accounts, no more accounts to review, exit
-
-	}
-
-	public void viewCustAccounts() {
-
-		// view a customer's accounts by retrieving all associated with that user name
-
-	}
-
-	public void viewTransactions() {
-
-		// return database transactions table (PK, Account#, USer, Amount, (maybe time stamp stored as string in java))
-
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Account other = (Account) obj;
+		if (accountBal == null) {
+			if (other.accountBal != null)
+				return false;
+		} else if (!accountBal.equals(other.accountBal))
+			return false;
+		if (accountNum == null) {
+			if (other.accountNum != null)
+				return false;
+		} else if (!accountNum.equals(other.accountNum))
+			return false;
+		if (accountType == null) {
+			if (other.accountType != null)
+				return false;
+		} else if (!accountType.equals(other.accountType))
+			return false;
+		if (isPending != other.isPending)
+			return false;
+		if (userId == null) {
+			if (other.userId != null)
+				return false;
+		} else if (!userId.equals(other.userId))
+			return false;
+		return true;
 	}
 
 }

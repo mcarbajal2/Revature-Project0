@@ -19,7 +19,17 @@ public class User {
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.employeeAcct = employeeAcct;
+		this.employeeAcct = false;
+	}
+	
+	public User(Integer id, String username, String password, String firstName, String lastName, boolean employeeAcct) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.employeeAcct = false;
 	}
 
 	// Getters and Setters

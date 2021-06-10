@@ -1,50 +1,58 @@
--- Users (Customer, Employee)
+
+/*** CREATE users table ***/
 
 create table users (
-
-id serial primary key, 
-username varchar(20) not null,
-password varchar(20) not null,
-f_name varchar(20) not null,
-l_name varchar (20) not null,
-employee boolean
+u_id serial primary key,
+username varchar(20),
+password varchar(20),
+f_name varchar(20),
+l_name varchar (20),
+is_employee boolean
 );
 
--- Accounts (Savings, Checking)
+/*** CREATE accounts table ***/
 
 create table accounts (
-
-id serial primary key,
-account_num serial not null,
-pending_account boolean,
-account_bal int not null,
-u_id int -- foreign key to users table
+acc_num serial primary key, 
+u_id int references users(u_id), -- fk to users, 
+acc_num serial,
+balance numeric(10),
+acc_type varchar(10),
+is_pending boolean
 );
 
--- Create Accounts Foreign Key
-
-alter table accounts drop constraint accounts_user_fk;
-
-alter table accounts
-add constraint accounts_user_fk
-foreign key (u_id) references users(id) on delete set null;
-
--- Transactions Logs (username, transaction amount)
+/*** CREATE transctions table ***/
 
 create table transactions (
-id serial primary key,
-username varchar(20) not null,
-transaction int not null,
-t_id int -- foreign key to accounts table
+t_id serial primary key,
+u_id int references accounts(u_id), -- fk to accounts
+acc_num numeric(6),
+t_amount numeric(10),
+t_name varchar(10)
 );
 
--- Create Transactions Foreign Key
+/*** PROCEDURE ***/
 
-alter table transactions drop constraint transactions_accounts_fk;
+create procedure add_user(u_id serial, username varchar, password varchar, f_name varchar, l_name varchar, is_employee boolean)
+language sql
+as $$
+insert into "BankApp".users values(default, username, password, f_name, l_name, is_employee);
+$$;
 
-alter table transactions
-add constraint transactions_accounts_fk
-foreign key (t_id) references accounts(id) on delete set null;
+-- call add_user();
+
+/*** INSERT employee dummy account***/
+
+insert into users values (default, 'admin', 'password', 'John', 'Smith', true);
 
 
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
+DROP OWNED BY mina CASCADE;
+
+show search_path;
+set search_path to public;
+
+delete from users where u_id = 5;
 

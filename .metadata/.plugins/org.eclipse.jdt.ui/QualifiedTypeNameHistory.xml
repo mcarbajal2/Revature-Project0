@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="dev.carbajal.repositories.GenericRepo"/>
-    <fullyQualifiedTypeName name="dev.carbajal.models.Account"/>
+    <fullyQualifiedTypeName name="dev.carbajal.repositories.TransactionRepo"/>
+    <fullyQualifiedTypeName name="java.util.Scanner"/>
+    <fullyQualifiedTypeName name="java.sql.Connection"/>
+    <fullyQualifiedTypeName name="dev.carbajal.utils.JDBCConnection"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
+    <fullyQualifiedTypeName name="dev.carbajal.repositories.AccountDAOImpl"/>
+    <fullyQualifiedTypeName name="dev.carbajal.services.TransactionService"/>
+    <fullyQualifiedTypeName name="dev.carbajal.repositories.TransactionDAOImpl"/>
+    <fullyQualifiedTypeName name="dev.carbajal.services.UserServiceImpl"/>
+    <fullyQualifiedTypeName name="dev.carbajal.services.UserService"/>
     <fullyQualifiedTypeName name="dev.carbajal.models.User"/>
+    <fullyQualifiedTypeName name="dev.carbajal.models.Account"/>
+    <fullyQualifiedTypeName name="dev.carbajal.repositories.AccountDAO"/>
+    <fullyQualifiedTypeName name="dev.carbajal.models.Transaction"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="dev.carbajal.repositories.TransactionDAO"/>
+    <fullyQualifiedTypeName name="org.apache.logging.log4j.Logger"/>
+    <fullyQualifiedTypeName name="org.apache.logging.log4j.LogManager"/>
+    <fullyQualifiedTypeName name="dev.carbajal.repositories.UserDAO"/>
+    <fullyQualifiedTypeName name="dev.carbajal.repositories.UserDAOImpl"/>
 </qualifiedTypeNameHistroy>
