@@ -7,7 +7,7 @@ import dev.carbajal.models.User;
 
 public interface TransactionService {
 
-	public boolean addTransaction(Transaction t);
+	public boolean addTransaction(int uId, int acctnum, Float amount, String type);
 
 	public Transaction getTransaction(Transaction t);
 

@@ -5,7 +5,7 @@ public class Transaction {
 	private Integer id;
 	private Integer userId;
 	private Integer accountNum;
-	private Double tAmount;
+	private Float tAmount;
 	private String tType;
 	
 	// Constructors
@@ -14,7 +14,7 @@ public class Transaction {
 		super();
 	}
 	
-	public Transaction(Integer accountNum, Double tAmount, String tType) {
+	public Transaction(Integer userId, Integer accountNum, Float tAmount, String tType) {
 		super();
 		this.accountNum = accountNum;
 		this.tAmount = tAmount;
@@ -47,11 +47,11 @@ public class Transaction {
 		this.accountNum = accountNum;
 	}
 	
-	public Double gettAmount() {
+	public Float gettAmount() {
 		return tAmount;
 	}
 	
-	public void settAmount(Double tAmount) {
+	public void settAmount(Float tAmount) {
 		this.tAmount = tAmount;
 	}
 	
@@ -65,8 +65,8 @@ public class Transaction {
 	
 	@Override
 	public String toString() {
-		return "Transaction [id=" + id + ", userId=" + userId + ", accountNum=" + accountNum + ", tAmount=" + tAmount
-				+ ", tType=" + tType + "]";
+		return "Transaction(" + id + ") - User ID: " + userId + ", Account Number: " + accountNum + ", Transaction Amount: " + tAmount
+				+ ", Transaction Type: " + tType + "\n";
 	}
 	
 	@Override

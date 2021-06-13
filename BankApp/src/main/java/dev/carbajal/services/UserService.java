@@ -11,8 +11,10 @@ public interface UserService {
 	public void logout();
 
 	public boolean addUser(User u);
+	
+	public boolean checkIfUserExists(int id);
 
-	public User getUser(User u);
+	public User getUser(int id);
 	
 	public User getUserByUsername(String username);
 

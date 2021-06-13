@@ -35,11 +35,17 @@ public class UserServiceImpl implements UserService {
 
 		return udao.addUser(u);
 	}
+	
+	@Override
+	public boolean checkIfUserExists(int id) {
+		
+		return udao.checkIfUserExists(id);
+	}
 
 	@Override
-	public User getUser(User u) {
+	public User getUser(int id) {
 
-		return udao.getUser(u);
+		return udao.getUser(id);
 	}
 	
 	@Override

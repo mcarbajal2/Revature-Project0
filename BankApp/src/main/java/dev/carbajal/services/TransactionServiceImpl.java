@@ -12,9 +12,10 @@ public class TransactionServiceImpl implements TransactionService {
 	private static TransactionDAO tdao = new TransactionDAOImpl();
 
 	@Override
-	public boolean addTransaction(Transaction t) {
+	public boolean addTransaction(int uId, int acctnum, Float amount, String type) {
 		
-		return tdao.addTransaction(t);
+//		Transaction t = new Transaction(uId, acctnum, amount, type);
+		return tdao.addTransaction(uId, acctnum, amount, type);
 	}
 
 	@Override

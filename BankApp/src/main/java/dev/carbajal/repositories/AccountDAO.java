@@ -17,11 +17,21 @@ public interface AccountDAO {
 	
 	public List<Account> getAllAcct();
 	
-	public Account getBal(Account acc);
+	public Float getBalByNum(Account acc);
+	
+	public Account getAcctByNum(int accnum);
+	
+	public boolean checkIfAcctExists(int accnum);
 	
 	// Update
 	
-	public boolean updateAcc(Account acc);
+	public boolean updateAcc(int accnum);
+	
+	public boolean deposit(Account acc, Float total);
+	
+	public boolean withdraw(Account acc, Float total);
+	
+	public boolean transfer(Account acc1, Account acc2, Float total);
 	
 	// Delete
 	

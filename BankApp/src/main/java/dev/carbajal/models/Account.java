@@ -3,7 +3,7 @@ package dev.carbajal.models;
 public class Account {
 
 	private Integer accountNum;
-	private Double accountBal;
+	private Float accountBal;
 	private String accountType;
 	private boolean isPending;
 	private Integer userId;
@@ -19,12 +19,12 @@ public class Account {
 		this.setUserId(userId);
 	}
 
-	public Account(int accountNum, String accountType, boolean isPending, Double accountBal, Integer userId) {
+	public Account(int accountNum, String accountType, boolean isPending, Float accountBal, Integer userId) {
 
 		this.accountNum = accountNum;
 		this.accountType = accountType;
 		this.isPending = true;
-		this.accountBal = 0.00;
+		this.accountBal = 0.00F;
 		this.userId = userId;
 	}
 
@@ -62,18 +62,18 @@ public class Account {
 		this.isPending = isPending;
 	}
 
-	public double getAccountBal() {
+	public float getAccountBal() {
 		return accountBal;
 	}
 
-	public void setAccountBal(Double accountBal) {
+	public void setAccountBal(Float accountBal) {
 		this.accountBal = accountBal;
 	}
 
 	@Override
 	public String toString() {
-		return "Account [accountNum = " + accountNum + ", accountBal = " + accountBal + ", accountType = " + accountType
-				+ ", isPending = " + isPending + "]";
+		return "Account (" + accountNum + ") - Type: " + accountType
+				+ ", Pending Status: " + isPending + "\n";
 	}
 
 	@Override

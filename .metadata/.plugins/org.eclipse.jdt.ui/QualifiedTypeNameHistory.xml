@@ -20,6 +20,7 @@
     <fullyQualifiedTypeName name="dev.carbajal.repositories.TransactionDAO"/>
     <fullyQualifiedTypeName name="org.apache.logging.log4j.Logger"/>
     <fullyQualifiedTypeName name="org.apache.logging.log4j.LogManager"/>
-    <fullyQualifiedTypeName name="dev.carbajal.repositories.UserDAO"/>
     <fullyQualifiedTypeName name="dev.carbajal.repositories.UserDAOImpl"/>
+    <fullyQualifiedTypeName name="dev.carbajal.repositories.UserDAO"/>
+    <fullyQualifiedTypeName name="dev.carbajal.services.TransactionServiceImpl"/>
 </qualifiedTypeNameHistroy>

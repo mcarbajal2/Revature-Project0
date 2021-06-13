@@ -20,25 +20,35 @@ acc_type varchar(10),
 is_pending boolean
 );
 
+drop table accounts;
+drop table transactions;
+insert into accounts values (default, 3, 0.00, 'Checking', true);
+alter table accounts alter column balance type numeric(10,2);
+
+/*** STORED PROCEDURE ***/
+
+create procedure add_acct(u_id int, balance numeric, acc_type varchar, is_pending boolean)
+language sql
+as $$
+insert into accounts values (default, u_id, balance, acc_type, is_pending);
+$$;
+
+-- call add_acct();
+drop procedure add_acct(u_id int, balance numeric, acc_type varchar, is_pending boolean);
+
 /*** CREATE transctions table ***/
 
 create table transactions (
 t_id serial primary key,
-u_id int unique references accounts(u_id), -- fk to accounts
-acc_num numeric(6),
+u_id int,
+acc_num int references accounts(acc_num), -- fk to accounts
 t_amount numeric(10),
 t_name varchar(10)
 );
 
-/*** PROCEDURE ***/
+alter table transactions alter column acc_num type int;
+alter table transactions alter column t_amount type numeric(10,2);
 
-create procedure add_user(u_id serial, username varchar, password varchar, f_name varchar, l_name varchar, is_employee boolean)
-language sql
-as $$
-insert into "BankApp".users values(default, username, password, f_name, l_name, is_employee);
-$$;
-
--- call add_user();
 
 /*** INSERT employee dummy account***/
 
@@ -53,5 +63,9 @@ DROP OWNED BY mina CASCADE;
 show search_path;
 set search_path to public;
 
-delete from users where u_id = 5;
+delete from accounts where acc_num = 2;
+update accounts set balance = 1000.00 where acc_num = 1;
+update accounts set balance = 100.00 balance = 300.00 where acc_num = 1 acc_num = 3;
+insert into transactions values (default, 2, 8, 900.0, 'deposit');
+
 

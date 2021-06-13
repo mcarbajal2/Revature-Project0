@@ -16,17 +16,17 @@ public class TransactionDAOImpl implements TransactionDAO {
 	public static Connection conn = JDBCConnection.getConnection();
 
 	@Override
-	public boolean addTransaction(Transaction t) {
+	public boolean addTransaction(int uId, int acctnum, Float amount, String type) {
 
 		String sql = "insert into transactions values (default, ?, ?, ?, ?);";
 
 		try {
 
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, Integer.toString(t.getId()));
-			ps.setString(2, Integer.toString(t.getUserId()));
-			ps.setString(3, Double.toString(t.gettAmount()));
-			ps.setString(4, t.gettType());
+			ps.setInt(1, uId);
+			ps.setInt(2, acctnum);
+			ps.setFloat(3, amount);
+			ps.setString(4, type);
 
 			boolean success = ps.execute();
 
@@ -49,7 +49,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 
 			PreparedStatement ps = conn.prepareStatement(sql);
 
-			ps.setString(1, Integer.toString(t.getId()));
+			ps.setInt(1, t.getId());
 
 			ResultSet rs = ps.executeQuery();
 
@@ -57,11 +57,11 @@ public class TransactionDAOImpl implements TransactionDAO {
 				
 				Transaction tr = new Transaction();
 
-				t.setId(rs.getInt("t_id"));
-				t.setUserId(rs.getInt("u_id"));
-				t.setAccountNum(rs.getInt("acc_num"));
-				t.settAmount(rs.getDouble("t_amount"));
-				t.settType(rs.getString("t_name"));
+				tr.setId(rs.getInt("t_id"));
+				tr.setUserId(rs.getInt("u_id"));
+				tr.setAccountNum(rs.getInt("acc_num"));
+				tr.settAmount(rs.getFloat("t_amount"));
+				tr.settType(rs.getString("t_name"));
 
 				System.out.println(tr);
 				return tr;
@@ -86,7 +86,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 
 			PreparedStatement ps = conn.prepareStatement(sql);
 
-			ps.setString(1, Integer.toString(u.getId()));
+			ps.setInt(1, u.getId());
 
 			ResultSet rs = ps.executeQuery();
 
@@ -97,7 +97,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 				t.setId(rs.getInt("t_id"));
 				t.setUserId(rs.getInt("u_id"));
 				t.setAccountNum(rs.getInt("acc_num"));
-				t.settAmount(rs.getDouble("t_amount"));
+				t.settAmount(rs.getFloat("t_amount"));
 				t.settType(rs.getString("t_name"));
 
 				allUserTransactions.add(t);
@@ -137,7 +137,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 				t.setId(rs.getInt("t_id"));
 				t.setUserId(rs.getInt("u_id"));
 				t.setAccountNum(rs.getInt("acc_num"));
-				t.settAmount(rs.getDouble("t_amount"));
+				t.settAmount(rs.getFloat("t_amount"));
 				t.settType(rs.getString("t_name"));
 
 				allTransactions.add(t);
@@ -167,11 +167,11 @@ public class TransactionDAOImpl implements TransactionDAO {
 
 			PreparedStatement ps = conn.prepareStatement(sql);
 
-			ps.setString(1, Integer.toString(t.getUserId()));
-			ps.setString(2, Integer.toString(t.getAccountNum()));
-			ps.setString(3, Double.toString(t.gettAmount()));
+			ps.setInt(1, t.getUserId());
+			ps.setInt(2, t.getAccountNum());
+			ps.setFloat(3, t.gettAmount());
 			ps.setString(4, t.gettType());
-			ps.setString(5, Integer.toString(t.getId()));
+			ps.setInt(5, t.getId());
 
 			boolean success = ps.execute();
 			return success;
@@ -193,7 +193,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 
 			PreparedStatement ps = conn.prepareStatement(sql);
 
-			ps.setString(1, Integer.toString(t.getId()));
+			ps.setInt(1, t.getId());
 
 			boolean success = ps.execute();
 			return success;

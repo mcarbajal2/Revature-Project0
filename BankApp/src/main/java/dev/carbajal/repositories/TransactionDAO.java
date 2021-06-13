@@ -9,7 +9,7 @@ public interface TransactionDAO {
 	
 	// Create
 	
-	public boolean addTransaction(Transaction t);
+	public boolean addTransaction(int uId, int acctnum, Float amount, String type);
 	
 	// Read
 	

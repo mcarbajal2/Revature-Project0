@@ -12,11 +12,13 @@ public interface UserDAO {
 	
 	// Read
 	
-	public User getUser(User u);
+	public User getUser(int id);
 	
 	public User getUserByUsername(String username);
 	
 	public List<User> getAllUsers();
+	
+	public boolean checkIfUserExists(int id);
 	
 	// Update
 	

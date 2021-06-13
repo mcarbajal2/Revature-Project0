@@ -41,7 +41,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User getUser(User u) {
+	public User getUser(int id) {
 
 		String sql = "select * from users where u_id = ?";
 
@@ -49,7 +49,7 @@ public class UserDAOImpl implements UserDAO {
 
 			PreparedStatement ps = conn.prepareStatement(sql);
 
-			ps.setString(1, Integer.toString(u.getId()));
+			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 
 			if (rs.next()) {
@@ -70,6 +70,30 @@ public class UserDAOImpl implements UserDAO {
 		}
 
 		return null;
+	}
+	
+	@Override
+	public boolean checkIfUserExists(int id) {
+		
+		String sql = "select * from users where u_id = ?;";
+
+		try {
+
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+
+				return true;
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 
 	@Override
@@ -179,7 +203,7 @@ public class UserDAOImpl implements UserDAO {
 			ps.setString(3, u.getFirstName());
 			ps.setString(4, u.getLastName());
 			ps.setBoolean(5, u.isEmployeeAcct());
-			ps.setString(6, Integer.toString(u.getId()));
+			ps.setInt(6, u.getId());
 
 			boolean success = ps.execute();
 			return success;
@@ -201,7 +225,7 @@ public class UserDAOImpl implements UserDAO {
 
 			PreparedStatement ps = conn.prepareStatement(sql);
 
-			ps.setString(1, Integer.toString(u.getId()));
+			ps.setInt(1, u.getId());
 
 			boolean success = ps.execute();
 			return success;
@@ -213,5 +237,4 @@ public class UserDAOImpl implements UserDAO {
 
 		return false;
 	}
-
 }

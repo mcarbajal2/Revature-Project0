@@ -9,19 +9,17 @@ public interface AccountService {
 	
 	public boolean addAcct(Account acc);
 	
-	public Account getBal(Account acc);
+	public boolean checkIfAcctExists(int accnum);
 	
-	public Account deposit(Account acc, double total);
+	public Float getBalByNum(Account acc);
 	
-	public Account withdraw(Account acc, double total);
-	
-	public Account transfer(Account acc1, Account acc2, double total);
+	public Account getAcctByNum(int accnum);
 	
 	public List<Account> getAllUserAcct(User uid);
 	
 	public List<Account> getAllAcct();
 	
-	public boolean updateAcc(Account acc);
+	public boolean updateAcc(int accnum);
 	
 	public boolean deleteAcc(Account acc);
 

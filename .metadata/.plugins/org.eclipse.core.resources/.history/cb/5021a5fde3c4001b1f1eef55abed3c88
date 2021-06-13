@@ -1,7 +1,0 @@
-package dev.carbajal.models;
-
-public class Customer extends User {
-	
-	
-
-}

@@ -1,9 +1,0 @@
-package dev.carbajal.models;
-
-public class Customer extends User {
-	
-	public int deposit;
-	public int withdraw;
-	String accountType;
-
-}

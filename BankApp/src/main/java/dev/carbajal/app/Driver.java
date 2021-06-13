@@ -1,6 +1,5 @@
 package dev.carbajal.app;
 
-import java.util.List;
 import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 
 import dev.carbajal.models.User;
 import dev.carbajal.models.Account;
-import dev.carbajal.models.Transaction;
 import dev.carbajal.repositories.UserDAO;
 import dev.carbajal.repositories.UserDAOImpl;
 import dev.carbajal.services.UserService;
@@ -17,10 +15,9 @@ import dev.carbajal.repositories.AccountDAO;
 import dev.carbajal.repositories.AccountDAOImpl;
 import dev.carbajal.services.AccountService;
 import dev.carbajal.services.AccountServiceImpl;
+import dev.carbajal.services.TransactionServiceImpl;
 import dev.carbajal.repositories.TransactionDAO;
 import dev.carbajal.repositories.TransactionDAOImpl;
-import dev.carbajal.services.TransactionService;
-import dev.carbajal.services.TransactionServiceImpl;
 
 
 public class Driver {
@@ -32,10 +29,11 @@ public class Driver {
 	private static int eMenuChoice;
 	private static boolean programStatus;
 	private static User currentUser;
-	private static List<Account> tempList;
 	private static Account temp;
 	private static Account temp2;
-	private static String tempInput;
+	private static int tempInput;
+	private static float tempAmount;
+	private static String tempString;
 
 	public static final Logger logger = LogManager.getLogger(Driver.class);
 
@@ -44,7 +42,7 @@ public class Driver {
 	private static AccountDAO acctDAO = new AccountDAOImpl();
 	private static AccountService acctS = new AccountServiceImpl();
 	private static TransactionDAO tranDAO = new TransactionDAOImpl();
-	private static TransactionService tranS = new TransactionServiceImpl();
+	private static TransactionServiceImpl tranS = new TransactionServiceImpl();
 
 
 	public static void main(String[] args ) {
@@ -107,7 +105,7 @@ public class Driver {
 
 	public static void logInMenu() {
 
-		System.out.println("- Log In -\n\n");
+		System.out.println("- Log In -\n");
 		System.out.println("Please enter your username:");
 		String uName = scanner.next();
 		System.out.println("Please enter your password:");
@@ -144,7 +142,7 @@ public class Driver {
 
 	public static void newUserMenu() {	
 
-		System.out.println("- Create Account -\n\n");
+		System.out.println("- Create Account -\n");
 		System.out.println("Please enter the following information\n");
 		System.out.println("Username: ");
 		String uName = scanner.next();
@@ -168,8 +166,15 @@ public class Driver {
 
 	public static void customerActionsMenu() {
 
-		System.out.println("Welcome back " + currentUser.getFirstName() + "!\n\n"
-				+ "Options:\n"
+		System.out.println("\n- Main Menu -");
+		System.out.println("Welcome back " + currentUser.getFirstName() + "!\n");
+
+		if (acctDAO.getAllUserAcct(currentUser) == null) {
+
+			System.out.println("Your current accounts: None, please open an account to user the banking features.\n");
+		}
+
+		System.out.println("Options:\n"
 				+ "1. Open a new account\n"
 				+ "2. View existing account(s) balance\n"
 				+ "3. Deposit funds\n"
@@ -181,51 +186,45 @@ public class Driver {
 		parseCustomerActions();
 	}
 
-	@SuppressWarnings("unlikely-arg-type")
 	public static void parseCustomerActions() {
 
 		switch (cMenuChoice) {
 
 		case 1: // opening a new account
+
 			System.out.println("New Account Type:\n"
 					+ "1. Checking\n"
 					+ "2. Savings");
 			int tempAccType = scanner.nextInt();
 
 			switch(tempAccType) {
+
 			case 1:
+
 				Account newCheckingAcct = new Account();
 				newCheckingAcct.setUserId(currentUser.getId());
-				newCheckingAcct.setAccountBal(0.00);
+				newCheckingAcct.setAccountBal(0.00F);
 				newCheckingAcct.setAccountType("checking");
 				newCheckingAcct.setPendingAccount(true);
 				acctDAO.addAcct(newCheckingAcct);
 				acctS.addAcct(newCheckingAcct);
 
-				Transaction newCheckingTrans = new Transaction();
-				newCheckingTrans.settType("checking account opened");
-				tranDAO.addTransaction(newCheckingTrans);
-				tranS.addTransaction(newCheckingTrans);
-
+				logger.info("New checking account created for " + currentUser.getFirstName() + " " + currentUser.getLastName());
 				System.out.println("Checking account is now pending review. You can check the status from the main menu.");
 				break;
 
 			case 2:
+
 				Account newSavingsAcct = new Account();
 				newSavingsAcct.setUserId(currentUser.getId());
-				newSavingsAcct.setAccountBal(0.00);
+				newSavingsAcct.setAccountBal(0.00F);
 				newSavingsAcct.setAccountType("savings");
 				newSavingsAcct.setPendingAccount(true);
 				acctDAO.addAcct(newSavingsAcct);
 				acctS.addAcct(newSavingsAcct);
 
-				Transaction newSavingsTrans = new Transaction();
-				newSavingsTrans.settType("savings account opened");
-				newSavingsTrans.setUserId(currentUser.getId());
-				tranDAO.addTransaction(newSavingsTrans);
-				tranS.addTransaction(newSavingsTrans);
-
-				System.out.println("Savings account is now pending review. You can check the status from the main menu.");
+				logger.info("New savings account created for " + currentUser.getFirstName() + " " + currentUser.getLastName());
+				System.out.println("Savings account is now pending review. You can check the status from the main menu.\n");
 				break;
 
 			default:
@@ -237,16 +236,15 @@ public class Driver {
 			break;
 
 		case 2: // view an account balance
-			tempList = acctDAO.getAllUserAcct(currentUser);
 
-			System.out.println("Your available accounts:\n\n"
-					+ acctDAO.getAllUserAcct(currentUser) + "\n\n"
-					+ "Which account would you like to view?");
-			tempInput = scanner.next();
+			System.out.println("Your available accounts:\n");
+			System.out.println(acctDAO.getAllUserAcct(currentUser).toString());
+			System.out.println("\nWhich account would you like to view?");
+			tempInput = scanner.nextInt();
 
-			if (tempList.contains(tempInput)) {
+			if (acctDAO.checkIfAcctExists(tempInput)) {
 
-				acctDAO.getBal(tempList.get(Integer.valueOf(tempInput)));
+				System.out.println("Account balance: " + acctDAO.getBalByNum(acctDAO.getAcctByNum(tempInput)));
 
 			} else {
 
@@ -258,156 +256,220 @@ public class Driver {
 			break;
 
 		case 3: // deposit
-			tempList = acctDAO.getAllUserAcct(currentUser);
 
-			System.out.println("Your available accounts:\n\n"
-					+ acctDAO.getAllUserAcct(currentUser) + "\n\n"
-					+ "Which account would you like to deposit to?");
-			tempInput = scanner.next();
+			System.out.println("Your available accounts:\n");
+			System.out.println(acctDAO.getAllUserAcct(currentUser).toString());
+			System.out.println("\nWhich account would you like to deposit to?");
+			tempInput = scanner.nextInt();
 
-			if (tempList.contains(tempInput)) {
+			if (acctDAO.checkIfAcctExists(tempInput)) {
 
-				temp = tempList.get(Integer.valueOf(tempInput));
-				System.out.println("How much would you like to deposit?");
-				tempInput = scanner.next();
+				temp = acctDAO.getAcctByNum(tempInput);
 
-				// system invalid transaction check
+				if (temp.isPendingAccount() == false) {
 
-				if (Integer.valueOf(tempInput) > 0) {
+					while (true) {
 
-					acctS.deposit(temp, Integer.valueOf(tempInput));
+						System.out.println("Amount to deposit:");
+						tempAmount = scanner.nextFloat();
 
-					Transaction newDepositTrans = new Transaction();
-					newDepositTrans.settType("credit");
-					newDepositTrans.setAccountNum(temp.getAccountNum());
-					newDepositTrans.settAmount(Double.valueOf(tempInput));
-					newDepositTrans.setUserId(currentUser.getId());
+						if (tempAmount > 0.00F) {
 
-					tranS.addTransaction(newDepositTrans);
+							System.out.println("Is $" + tempAmount + " correct? Y/N");
+							tempString = scanner.next();
+
+							if (tempString.equalsIgnoreCase("Y")) {
+
+								acctDAO.deposit(acctDAO.getAcctByNum(tempInput), tempAmount);
+//								tranDAO.addTransaction(currentUser.getId(), tempInput, tempAmount, "deposit");
+								tranS.addTransaction(currentUser.getId(), tempInput, tempAmount, "deposit");
+								logger.info("New deposit created for Account (" + tempInput + ") in the amount of $" + tempAmount);
+								System.out.println("Deposit complete!");
+								break;
+
+							} else if (tempString.equalsIgnoreCase("N")) {
+
+								continue;
+
+							} else {
+
+								System.out.println("Our system doesn't recognize that input.\n"
+										+ "Please try again.\n");
+
+								continue;
+							}
+
+						} else {
+
+							System.out.println("Deposit amount must be greater than zero.\n"
+									+ "Exiting out of the transaction screen for security reasons, please try again.\n");
+							customerActionsMenu();
+						}
+					}
 
 				} else {
 
-					System.out.println("Deposit amount must be greater than zero.\n"
+					System.out.println("Account must be approved before you can use it.\n"
 							+ "Exiting out of the transaction screen for security reasons, please try again.\n");
 					customerActionsMenu();
 				}
 
-			} else {
+			} else {			
 
 				System.out.println("An account with that number was not found.\n"
 						+ "Exiting out of the transaction screen for security reasons, please try again.\n");
 				customerActionsMenu();
-			}
+			}	
 
 			break;
 
 		case 4: // withdraw
-			tempList = acctDAO.getAllUserAcct(currentUser);
 
-			System.out.println("Your available accounts:\n\n"
-					+ acctDAO.getAllUserAcct(currentUser) + "\n\n"
-					+ "Which account would you like to withdraw from?");
-			tempInput = scanner.next();
+			System.out.println("Your available accounts:\n");
+			System.out.println(acctDAO.getAllUserAcct(currentUser).toString());
+			System.out.println("\nWhich account would you like to withdraw from?");
+			tempInput = scanner.nextInt();
 
-			if (tempList.contains(tempInput)) {
+			if (acctDAO.checkIfAcctExists(tempInput)) {
 
-				temp = tempList.get(Integer.valueOf(tempInput));
-				System.out.println("How much would you like to withdraw?");
-				tempInput = scanner.next();
+				temp = acctDAO.getAcctByNum(tempInput);
 
-				// system invalid transaction check
+				if (temp.isPendingAccount() == false) {
 
-				if (Integer.valueOf(tempInput) < temp.getAccountBal()) {
+					while (true) {
 
-					acctS.withdraw(temp, Integer.valueOf(tempInput));
+						System.out.println("Amount to withdraw:");
+						tempAmount = scanner.nextFloat();
 
-					Transaction newWithdrawTrans = new Transaction();
-					newWithdrawTrans.settType("debit");
-					newWithdrawTrans.setAccountNum(temp.getAccountNum());
-					newWithdrawTrans.settAmount(Double.valueOf(tempInput));
-					newWithdrawTrans.setUserId(currentUser.getId());
+						if (tempAmount < temp.getAccountBal()) {
 
-					tranS.addTransaction(newWithdrawTrans);
+							System.out.println("Is $" + tempAmount + " correct? Y/N");
+							tempString = scanner.next();
+
+							if (tempString.equalsIgnoreCase("Y")) {
+
+								acctDAO.withdraw(acctDAO.getAcctByNum(tempInput), tempAmount); 
+//								tranDAO.addTransaction(currentUser.getId(), tempInput, tempAmount, "withdrawal");
+								tranS.addTransaction(currentUser.getId(), tempInput, tempAmount, "withdrawal");
+								logger.info("New withdrawal created for Account (" + tempInput + ") in the amount of $" + tempAmount);
+								System.out.println("Withdrawal complete! Returning to the main menu.");
+								break;
+
+							} else if (tempString.equalsIgnoreCase("N")) {
+
+								continue;
+
+							} else {
+
+								System.out.println("Our system doesn't recognize that input.\n"
+										+ "Please try again.\n");
+
+								continue;
+							}
+
+						} else {
+
+							System.out.println("Withdrawal amount more than account balance.\n"
+									+ "Exiting out of the transaction screen for security reasons, please try again.\n");
+							customerActionsMenu();
+						}
+					}
 
 				} else {
 
-					System.out.println("Withdrawl amount more than account balance.\n"
+					System.out.println("Account must be approved before you can use it.\n"
 							+ "Exiting out of the transaction screen for security reasons, please try again.\n");
 					customerActionsMenu();
 				}
 
-			} else {
+			} else {			
 
 				System.out.println("An account with that number was not found.\n"
 						+ "Exiting out of the transaction screen for security reasons, please try again.\n");
 				customerActionsMenu();
-			}
+			}	
 
 			break;
 
 		case 5: // transfer funds
-			tempList = acctDAO.getAllUserAcct(currentUser);
 
-			System.out.println("Your available accounts:\n\n"
-					+ acctDAO.getAllUserAcct(currentUser) + "\n\n"
-					+ "Which account would you like to start transfering from?");
-			tempInput = scanner.next();
+			System.out.println("Your available accounts:\n");
+			System.out.println(acctDAO.getAllUserAcct(currentUser).toString());
+			System.out.println("\nWhich account would you like to transfer from?");
+			tempInput = scanner.nextInt();
 
-			if (tempList.contains(tempInput)) {
+			if (acctDAO.checkIfAcctExists(tempInput)) {
 
-				temp = tempList.get(Integer.valueOf(tempInput));
-				System.out.println("Which account whould you like to transfer funds to?");
-				tempInput = scanner.next();
+				temp = acctDAO.getAcctByNum(tempInput);
 
-				if(tempList.contains(tempInput)) {
+				if (temp.isPendingAccount() == false) {
 
-					temp2 = tempList.get(Integer.valueOf(tempInput));
-					System.out.println("Amount to transfer:?");
-					tempInput = scanner.next();
+					System.out.println("\nWhich account would you like to transfer to?");
+					tempInput = scanner.nextInt();
 
-					// system invalid transaction check
+					if (acctDAO.checkIfAcctExists(tempInput)) {
 
-					if (Integer.valueOf(tempInput) < temp.getAccountBal()) {
+						temp2 = acctDAO.getAcctByNum(tempInput);
 
-						System.out.println("Transfer x to account x. Is this correct Y/N?");
-						String answer = scanner.next();
+						if (temp2.isPendingAccount() == false) {
 
-						if (answer.equalsIgnoreCase("yes")) {
+							while (true) {
 
-							acctS.withdraw(temp, Integer.valueOf(tempInput));
-							acctS.deposit(temp2, Integer.valueOf(tempInput));
+								System.out.println("Amount to transfer:");
+								tempAmount = scanner.nextFloat();
 
-							Transaction newTransferTrans = new Transaction();
-							newTransferTrans.settType("transfer - withdrawal");
-							newTransferTrans.setAccountNum(temp.getAccountNum());
-							newTransferTrans.settAmount(Double.valueOf(tempInput));
-							newTransferTrans.setUserId(currentUser.getId());
+								if (tempAmount < temp.getAccountBal()) {
 
-							tranS.addTransaction(newTransferTrans);
+									System.out.println("Is $" + tempAmount + " correct? Y/N");
+									tempString = scanner.next();
 
-							newTransferTrans.settType("transfer - deposit");
-							newTransferTrans.setAccountNum(temp2.getAccountNum());
-							newTransferTrans.settAmount(Double.valueOf(tempInput));
-							newTransferTrans.setUserId(currentUser.getId());
+									if (tempString.equalsIgnoreCase("Y")) {
 
-							tranS.addTransaction(newTransferTrans);
+										acctDAO.transfer(temp, temp2, tempAmount); 
+//										tranDAO.addTransaction(currentUser.getId(), temp.getAccountNum(), tempAmount, "transfer");
+										tranS.addTransaction(currentUser.getId(), temp.getAccountNum(), tempAmount, "transfer");
+										tranS.addTransaction(currentUser.getId(), temp2.getAccountNum(), tempAmount, "transfer");
+										logger.info("New transfer created for Account (" + temp.getAccountNum() + ") to Account (" + temp2.getAccountNum() + ") in the amount of $" + tempAmount);
+										System.out.println("Transfer complete! Returning to the main menu.");
+										break;
+
+									} else if (tempString.equalsIgnoreCase("N")) {
+
+										continue;
+
+									} else {
+
+										System.out.println("Our system doesn't recognize that input.\n"
+												+ "Please try again.\n");
+
+										continue;
+									}
+
+								} else {
+
+									System.out.println("Withdrawal amount more than account balance.\n"
+											+ "Exiting out of the transaction screen for security reasons, please try again.\n");
+									customerActionsMenu();
+								}
+							}
 
 						} else {
 
-							System.out.println("Exiting out of the transaction screen for security reasons, please try again.\n");
+							System.out.println("Account must be approved before you can use it.\n"
+									+ "Exiting out of the transaction screen for security reasons, please try again.\n");
 							customerActionsMenu();
 						}
 
 					} else {
 
-						System.out.println("Withdrawl amount more than account balance.\n"
+						System.out.println("An account with that number was not found.\n"
 								+ "Exiting out of the transaction screen for security reasons, please try again.\n");
-						customerActionsMenu();
+						customerActionsMenu();		
 					}
 
 				} else {
 
-					System.out.println("An account with that number was not found.\n"
+					System.out.println("Account must be approved before you can use it.\n"
 							+ "Exiting out of the transaction screen for security reasons, please try again.\n");
 					customerActionsMenu();
 				}
@@ -422,6 +484,7 @@ public class Driver {
 			break;
 
 		case 6: // log out
+
 			logger.info("Customer, " + currentUser.getFirstName() + " " + currentUser.getLastName() + ", has logged out.");
 			userS.logout();
 			currentUser = null;
@@ -429,7 +492,8 @@ public class Driver {
 			break;
 
 		default:
-			System.out.println("Our system doesn't recognize that number, please try again.\n");
+
+			System.out.println("Our system doesn't recognize that option, please try again.\n");
 			customerActionsMenu();
 			break;
 		}
@@ -442,123 +506,87 @@ public class Driver {
 				+ "1. Review pending accounts\n"
 				+ "2. View a user's accounts\n"
 				+ "3. View all accounts\n"
-				+ "4. View a recent transaction\n"
-				+ "5. View all recent transactions\n"
-				+ "6. Log out");
+				+ "4. View all recent transactions\n"
+				+ "5. Log out");
 
 		eMenuChoice = scanner.nextInt();
 		parseEmployeeActions();
 	}
 
-	@SuppressWarnings("unlikely-arg-type")
 	public static void parseEmployeeActions() {
 
 		switch (eMenuChoice) {
 
 		case 1: // review accounts
-			tempList = acctDAO.getAllAcct();
 
-			System.out.println("Accounts currently awaiting review:\n\n"
-					+ acctDAO.getAllUserAcct(currentUser) + "\n\n"
-					+ "Which account would you like to view?");
-			tempInput = scanner.next();
+			System.out.println("\nAll accounts:\n\n"
+					+ acctDAO.getAllAcct() + "\n\n"
+					+ "Which account would you like to approve?");
+			tempInput = scanner.nextInt();
 
-			for (Account a : tempList) {
+			if (acctDAO.checkIfAcctExists(tempInput)) {
 
-				if (a.isPendingAccount() == true) {
+				temp = acctDAO.getAcctByNum(tempInput);
 
-					acctDAO.updateAcc(a);
-					acctS.updateAcc(a);
+				if (temp.isPendingAccount() == true) {
 
-					Transaction newUpdateTrans = new Transaction();
-					newUpdateTrans.settType("account approved");
-					newUpdateTrans.setUserId(currentUser.getId());
-					tranS.addTransaction(newUpdateTrans);
-					
-					System.out.println("Account " + a.getAccountNum() + " successfully updated!\n");
-					
+					acctDAO.updateAcc(tempInput);
+					acctS.updateAcc(tempInput);
+
+					System.out.println("Account (" + tempInput + ") successfully updated!\n");
+
 				} else {
 
-					System.out.println("An account with that number was not found.\n"
-							+ "Exiting out of the transction screen for security reasons, please try again.\n");
+					System.out.println("That account is already approved and does not require reviewing.\n"
+							+ "Exiting out of the transaction screen for security reasons, please try again.\n");
 					employeeActionsMenu();
 				}
+			} else {
+
+				System.out.println("An account with that number was not found.\n"
+						+ "Exiting out of the transaction screen for security reasons, please try again.\n");
+				employeeActionsMenu();
 			}
+
 			break;
 
 		case 2: // view a user's accounts
-			System.out.println("All available accounts");
-			for(Account a : tempList) {
 
-				System.out.println(a.getUserId());
-			}
+			System.out.println("\nAll Users:\n\n"
+					+ userDAO.getAllUsers() + "\n\n"
+					+ "Which user (id number) would you like to view?");
+			tempInput = scanner.nextInt();
 
-			System.out.println("Which user's accounts would you like to view?");
-			tempInput = scanner.next();
+			if (userDAO.checkIfUserExists(tempInput)) {
 
-			if (tempList.contains(tempInput)) {
-
-				currentUser.setId(Integer.valueOf(tempInput));
-				System.out.println(acctDAO.getAllUserAcct(currentUser));
+				System.out.println(acctDAO.getAllUserAcct(userDAO.getUser(tempInput)));
 
 			} else {
 
 				System.out.println("An account with that number was not found.\n"
-						+ "Exiting out of the transction screen for security reasons, please try again.\n");
+						+ "Exiting out of the transaction screen for security reasons, please try again.\n");
 				employeeActionsMenu();
 			}
 
 			break;
 
 		case 3: // view all accounts
-			tempList = acctDAO.getAllAcct();
-			System.out.println("All User accounts:\n\n");
 
-			for(Account a : tempList) {
-
-				System.out.println(a);
-			}
+			System.out.println("\nAll accounts:\n\n"
+					+ acctDAO.getAllAcct() + "\n\n");
 
 			break;
 
 		case 4: // view transaction
-			System.out.println("All available account transactions:");
 
-			for (Transaction t : tranDAO.getAllTransactions()) {
+			System.out.println("All User transactions:\n\n"
+					+ tranDAO.getAllTransactions() + "\n\n");
 
-				System.out.println(tranDAO.getTransaction(t));
-			}
-
-			System.out.println("Which user's transactions would you like to view?");
-			tempInput = scanner.next();
-
-			if (tempList.contains(tempInput)) {
-
-				currentUser.setId(Integer.valueOf(tempInput));
-				System.out.println(acctDAO.getAllUserAcct(currentUser));
-
-			} else {
-
-				System.out.println("An account with that number was not found.\n"
-						+ "Exiting out of the transction screen for security reasons, please try again.\n");
-				employeeActionsMenu();
-			}
-
-			break;
-
-		case 5: // view all transactions
-			
-			System.out.println("All User transactions:\n\n");
-
-			for (Transaction t : tranDAO.getAllTransactions()) {
-
-				System.out.println(tranDAO.getTransaction(t));
-			}
-			
 			employeeActionsMenu();
 			break;
 
-		case 6: // log out
+		case 5: // log out
+
 			logger.info("Employee, " + currentUser.getFirstName() + " " + currentUser.getLastName() + ", has logged out.");
 			userS.logout();
 			currentUser = null;
@@ -566,6 +594,7 @@ public class Driver {
 			break;
 
 		default:
+
 			System.out.println("Our system doesn't recognize that number, please try again.\n");
 			employeeActionsMenu();
 			break;
